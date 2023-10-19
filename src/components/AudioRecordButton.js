@@ -1,113 +1,79 @@
-import React, {useEffect, useReducer, useRef} from 'react';
-import {View, PermissionsAndroid} from 'react-native';
-import {Recorder} from '@react-native-community/audio-toolkit';
+import React, {useState} from 'react';
+import {View, TouchableOpacity, StyleSheet, ToastAndroid, Text} from 'react-native';
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-import VoiceRecordButtonComponent from './VoiceRecordButtonComponent';
-import RecordedAudioComponent from './RecordedAudioComponent';
+import color from '../../themes/color';
+import timeUtil from '../../utils/time_util';
 
-const AudioRecordButton = (props) => {
-  const recorder = useRef(null);
-  const recorderInterval = useRef(null);
-  const recordDuration = useRef(0);
-  const recordBtnRef = useRef(null);
-  const filename = useRef(`${props.uuid}.mp3`);
-  const hasPermission = useRef(false)
-  const [state, setState] = useReducer((prev, next) => {
-    return {...prev, ...next}
-  }, {
-    isRecordButtonVisible: true,
-    isPlaying: false,
-    playSeconds: 0,
-    recordedFile: null,
-  });
+const {useImperativeHandle} = React;
 
-  useEffect(() => {
-    requestPermission();
-  }, []);
+const AudioRecordButton = (props, ref) => {
+  const [recordDuration, setRecordDuration] = useState(0)
+  const [isRecording, setIsRecording] = useState(false)
 
-  const requestPermission = () => {
-    const rationale = {
-      'title': 'Microphone Permission',
-      'message': 'This mobile app require your microphone permission in order to be able to record the voice.'
-    };
+  useImperativeHandle(ref, () => ({
+    updateRecordDuration,
+    updateIsRecording,
+  }));
 
-    return PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale)
-      .then((result) => {hasPermission.current = (result === true || result === PermissionsAndroid.RESULTS.GRANTED)});
+  const updateRecordDuration = (duration) => {
+    setRecordDuration(duration);
   }
 
-  const startRecording = () => {
-    if (!hasPermission.current) {
-      requestPermission();
-      return;
-    }
-
-    recorder.current = new Recorder(filename.current, {format: 'mp3'});
-    recorder.current.prepare(() => {
-      recorder.current.record(() => {
-        recordBtnRef.current?.updateIsRecording(true);
-        recorderInterval.current = setInterval(() => {
-          recordBtnRef.current?.updateRecordDuration(recordDuration.current += 1);
-        }, 1000);
-      });
-    });
+  const updateIsRecording = (status) => {
+    setIsRecording(status);
   }
 
-  const stopRecording = () => {
-    if (recorder.current === null) return;
-
-    recordBtnRef.current?.updateIsRecording(false);
-    clearInterval(recorderInterval.current);
-    recorder.current.stop(() => {
-      setState({
-        isRecordButtonVisible: false,
-        recordedFile: recorder.current.fsPath
-      });
-      // props.finishRecord(recorder.current.fsPath);
-    });
+  const renderRecordTime = () => {
+    return (
+      <Text style={{fontWeight: 'bold', fontSize: 18}}>
+        { timeUtil.getTimeFromDuration(recordDuration) }
+      </Text>
+    );
   };
 
-  const resetRecorder = () => {
-    if (!recorder.current) return;
-
-    recorder.current.destroy();
-    recorder.current = null;
-    recorderInterval.current = null;
-    recordDuration.current = 0;
-
-    setState({
-      isRecordButtonVisible: true,
-      isPlaying: false,
-      hasPermission: false,
-      playSeconds: 0,
-      recordedFile: null,
-    })
-  }
-
-  const renderRecordButton = () => {
-    return <VoiceRecordButtonComponent
-              ref={recordBtnRef}
-              recordDuration={recordDuration.current}
-              disabled={props.disabled}
-              startRecording={() => startRecording()}
-              stopRecording={() => stopRecording()}
-           />
-  }
-
-  const renderRecordedAudio = () => {
-    return <RecordedAudioComponent
-              recordedFile={state.recordedFile}
-              uuid={props.uuid}
-              audioDuration={recordDuration.current}
-              resetRecorder={() => resetRecorder()}
-           />
+  const showToastMessage = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      "សូមចុចនិងសង្កត់លើប៊ូតុងដើម្បីថតសម្លេង",
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+      0,
+      200
+    );
   }
 
   return (
-    <View style={{borderWidth: 1, padding: 20}}>
-      {state.isRecordButtonVisible && renderRecordButton()}
-      {!state.isRecordButtonVisible && renderRecordedAudio()}
+    <View>
+      <View style={{alignItems: 'center', height: 30}}>
+        { !!isRecording && renderRecordTime() }
+      </View>
+
+      <TouchableOpacity
+        onLongPress={() => props.startRecording()}
+        onPressOut={() => props.stopRecording()}
+        onPress={() => showToastMessage()}
+        style={[styles.voiceRecordButton, props.disabled && {backgroundColor: "#e0e0e0"}]}
+        disabled={props.disabled}
+      >
+        <AwesomeIcon name="microphone" size={35} color={color.primaryColor} />
+      </TouchableOpacity>
     </View>
   )
 }
 
-export default AudioRecordButton;
+const styles = StyleSheet.create({
+  voiceRecordButton: {
+    backgroundColor: color.whiteColor,
+    borderWidth: 3,
+    borderColor: color.primaryColor,
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+});
+
+export default React.forwardRef(AudioRecordButton);
