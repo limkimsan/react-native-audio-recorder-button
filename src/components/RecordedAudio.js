@@ -4,8 +4,8 @@ import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import color from '../../themes/color';
-import timeUtil from '../../utils/time_util';
-import audioPlayerService from '../../services/audio_player_service';
+import timeUtil from '../utils/time_util';
+import audioPlayerService from '../services/audio_player_service';
 
 const RecordedAudio = (props) => {
   const currentAudioPlayer = useRef(null);
