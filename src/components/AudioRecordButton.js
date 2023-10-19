@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, StyleSheet, Text, Platform} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import Toast, { DURATION } from 'react-native-easy-toast';
 
 import colors from '../constants/colors';
 import timeUtil from '../utils/time_util';
@@ -11,7 +10,6 @@ const {useImperativeHandle} = React;
 const AudioRecordButton = (props, ref) => {
   const [recordDuration, setRecordDuration] = useState(0)
   const [isRecording, setIsRecording] = useState(false)
-  const toastRef = useRef()
 
   useImperativeHandle(ref, () => ({
     updateRecordDuration,
@@ -28,15 +26,11 @@ const AudioRecordButton = (props, ref) => {
 
   const renderRecordTime = () => {
     return (
-      <Text style={[{fontWeight: 'bold', fontSize: 18}, props.recordDurationLabelStyle]}>
+      <Text style={[{fontWeight: 'bold', fontSize: 18, color: colors.lightBlack}, props.recordDurationLabelStyle]}>
         { timeUtil.getTimeFromDuration(recordDuration) }
       </Text>
     );
   };
-
-  const showToastMessage = () => {
-    toastRef.current?.show('សូមចុច និងសង្កត់លើប៊ូតុងដើម្បីថតសម្លេង', DURATION.SHORT);
-  }
 
   const btnColor = props.disabled ? colors.disabled : props.primaryColor || colors.primary;
   return (
@@ -48,21 +42,18 @@ const AudioRecordButton = (props, ref) => {
       <TouchableOpacity
         onLongPress={() => props.startRecording()}
         onPressOut={() => props.stopRecording()}
-        onPress={() => showToastMessage()}
-        style={[styles.voiceRecordButton, {borderColor: btnColor}]}
+        onPress={() => props.showToastMessage()}
+        style={[styles.voiceRecordButton, {borderColor: btnColor}, props.recordButtonStyle, isRecording && {opacity: 0.2}]}
         disabled={props.disabled}
       >
-        <AwesomeIcon name="microphone" size={35} color={btnColor} />
+        <AwesomeIcon name="microphone" style={[{fontSize: 35, color: btnColor}, props.micIconStyle]} />
       </TouchableOpacity>
-
-      <Toast ref={toastRef} positionValue={ Platform.OS == 'ios' ? 120 : 140 }/>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   voiceRecordButton: {
-    backgroundColor: 'white',
     borderWidth: 3,
     width: 60,
     height: 60,

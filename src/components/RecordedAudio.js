@@ -50,9 +50,7 @@ const RecordedAudio = (props) => {
   }
 
   const deleteRecord = () => {
-    if (currentAudioPlayer.current != null)
-      currentAudioPlayer.release();
-
+    audioPlayerService.clearAllAudio();
     resetPlay();
     props.resetRecorder();
   }
@@ -61,8 +59,8 @@ const RecordedAudio = (props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => togglePlayAudio()} style={[styles.btnPlay, {borderColor: btnColor}]}>
-        { state.isPlaying ? <IonIcon name="pause" size={28} color={btnColor} style={{marginLeft: 1}} />
-          : <IonIcon name="play" size={28} color={btnColor} style={{marginLeft: 3}} />
+        { state.isPlaying ? <IonIcon name="pause" style={[{fontSize: 28, color: btnColor, marginLeft: 1}, props.pauseIconStyle]} />
+          : <IonIcon name="play" style={[{fontSize: 28, color: btnColor, marginLeft: 3}, props.playIconStyle]} />
         }
       </TouchableOpacity>
 

@@ -1,17 +1,19 @@
 import React, {useEffect, useReducer, useRef} from 'react';
-import {View, PermissionsAndroid} from 'react-native';
+import {View, PermissionsAndroid, Platform} from 'react-native';
 import {Recorder} from '@react-native-community/audio-toolkit';
+import Toast, { DURATION } from 'react-native-easy-toast';
 
 import AudioRecordButton from './AudioRecordButton';
-import RecordedAudioComponent from './RecordedAudioComponent';
+import RecordedAudio from './RecordedAudio';
 
-const VoiceRecorderComponent = (props) => {
+const AudioRecorder = (props) => {
   const recorder = useRef(null);
   const recorderInterval = useRef(null);
   const recordDuration = useRef(0);
   const recordBtnRef = useRef(null);
   const filename = useRef(`${props.filename}.mp3`);
   const hasPermission = useRef(false)
+  const toastRef = useRef()
   const [state, setState] = useReducer((prev, next) => {
     return {...prev, ...next}
   }, {
@@ -62,7 +64,7 @@ const VoiceRecorderComponent = (props) => {
         isRecordButtonVisible: false,
         recordedFile: recorder.current.fsPath
       });
-      !!props.finishRecord && props.finishRecord(recorder.current.fsPath);
+      !!props.onFinishRecord && props.onFinishRecord(recorder.current.fsPath);
     });
   };
 
@@ -84,34 +86,43 @@ const VoiceRecorderComponent = (props) => {
   }
 
   const renderRecordButton = () => {
+    const toastMessage = props.toastMessage || 'សូមចុច និងសង្កត់លើប៊ូតុងដើម្បីថតសម្លេង'
     return <AudioRecordButton
               ref={recordBtnRef}
               recordDuration={recordDuration.current}
               disabled={props.disabled}
               startRecording={() => startRecording()}
               stopRecording={() => stopRecording()}
+              showToastMessage={() => toastRef.current?.show(toastMessage, DURATION.SHORT)}
               primaryColor={props.primaryColor}
               recordDurationLabelStyle={props.recordDurationLabelStyle}
+              recordButtonStyle={props.recordButtonStyle}
+              micIconStyle={props.micIconStyle}
            />
   }
 
   const renderRecordedAudio = () => {
-    return <RecordedAudioComponent
+    return <RecordedAudio
               recordedFile={state.recordedFile}
               uuid={props.filename}
               audioDuration={recordDuration.current}
               resetRecorder={() => resetRecorder()}
               primaryColor={props.primaryColor}
               playDurationLabelStyle={props.playDurationLabelStyle}
+              playIconStyle={props.playIconStyle}
+              pauseIconStyle={props.pauseIconStyle}
            />
   }
 
   return (
-    <View style={{borderWidth: 1, padding: 20}}>
-      {state.isRecordButtonVisible && renderRecordButton()}
-      {!state.isRecordButtonVisible && renderRecordedAudio()}
-    </View>
+    <React.Fragment>
+      <View style={props.containerStyle}>
+        {state.isRecordButtonVisible && renderRecordButton()}
+        {!state.isRecordButtonVisible && renderRecordedAudio()}
+      </View>
+      <Toast ref={toastRef} positionValue={ Platform.OS == 'ios' ? 120 : 140 }/>
+    </React.Fragment>
   )
 }
 
-export default VoiceRecorderComponent;
+export default AudioRecorder;
