@@ -50,6 +50,7 @@ const RecordedAudio = (props) => {
   }
 
   const deleteRecord = () => {
+    !!currentAudioPlayer.current && currentAudioPlayer.current?.release()
     audioPlayerService.clearAllAudio();
     resetPlay();
     props.resetRecorder();
