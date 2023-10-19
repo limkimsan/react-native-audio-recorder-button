@@ -3,7 +3,7 @@ import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import color from '../../themes/color';
+import colors from '../constants/colors';
 import timeUtil from '../utils/time_util';
 import audioPlayerService from '../services/audio_player_service';
 
@@ -57,20 +57,23 @@ const RecordedAudio = (props) => {
     props.resetRecorder();
   }
 
+  const btnColor = props.primaryColor || colors.primary;
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => togglePlayAudio()} style={styles.btnPlay}>
-        { state.isPlaying ? <IonIcon name="pause" size={28} color={color.primaryColor} style={{marginLeft: 1}} />
-          : <IonIcon name="play" size={28} color={color.primaryColor} style={{marginLeft: 3}} />
+      <TouchableOpacity onPress={() => togglePlayAudio()} style={[styles.btnPlay, {borderColor: btnColor}]}>
+        { state.isPlaying ? <IonIcon name="pause" size={28} color={btnColor} style={{marginLeft: 1}} />
+          : <IonIcon name="play" size={28} color={btnColor} style={{marginLeft: 3}} />
         }
       </TouchableOpacity>
 
       <View style={{flex: 1, paddingHorizontal: 16}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold', color: color.lightBlackColor}}>{timeUtil.getTimeFromDuration(state.playSeconds)}</Text>
+        <Text style={[{fontSize: 18, fontWeight: 'bold', color: colors.lightBlack}, props.playDurationLabelStyle]}>
+          {timeUtil.getTimeFromDuration(state.playSeconds)}
+        </Text>
       </View>
 
       <TouchableOpacity onPress={ () => deleteRecord() } style={styles.btnDelete}>
-        <AwesomeIcon name="trash-o" size={30} color='rgb(228, 74, 74)' style={{marginRight: 6}} />
+        <AwesomeIcon name="trash-o" size={30} color={colors.lightRed} style={{marginRight: 6}} />
       </TouchableOpacity>
     </View>
   )
@@ -78,8 +81,14 @@ const RecordedAudio = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 8,
+    elevation: 3,
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 4,
+    paddingVertical: 14,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -87,22 +96,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    elevation: 3,
-
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 4,
-    paddingVertical: 14
   },
   btnPlay: {
+    alignItems: 'center',
+    borderRadius: 48,
+    borderWidth: 3,
+    justifyContent: 'center',
     height: 48,
     width: 48,
-    borderWidth: 3,
-    borderColor: color.primaryColor,
-    borderRadius: 48,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   btnDelete: {
     alignItems: 'center',

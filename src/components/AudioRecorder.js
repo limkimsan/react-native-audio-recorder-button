@@ -10,7 +10,7 @@ const VoiceRecorderComponent = (props) => {
   const recorderInterval = useRef(null);
   const recordDuration = useRef(0);
   const recordBtnRef = useRef(null);
-  const filename = useRef(`${props.uuid}.mp3`);
+  const filename = useRef(`${props.filename}.mp3`);
   const hasPermission = useRef(false)
   const [state, setState] = useReducer((prev, next) => {
     return {...prev, ...next}
@@ -62,7 +62,7 @@ const VoiceRecorderComponent = (props) => {
         isRecordButtonVisible: false,
         recordedFile: recorder.current.fsPath
       });
-      // props.finishRecord(recorder.current.fsPath);
+      !!props.finishRecord && props.finishRecord(recorder.current.fsPath);
     });
   };
 
@@ -90,15 +90,19 @@ const VoiceRecorderComponent = (props) => {
               disabled={props.disabled}
               startRecording={() => startRecording()}
               stopRecording={() => stopRecording()}
+              primaryColor={props.primaryColor}
+              recordDurationLabelStyle={props.recordDurationLabelStyle}
            />
   }
 
   const renderRecordedAudio = () => {
     return <RecordedAudioComponent
               recordedFile={state.recordedFile}
-              uuid={props.uuid}
+              uuid={props.filename}
               audioDuration={recordDuration.current}
               resetRecorder={() => resetRecorder()}
+              primaryColor={props.primaryColor}
+              playDurationLabelStyle={props.playDurationLabelStyle}
            />
   }
 
