@@ -104,7 +104,7 @@ const AudioRecorder = (props) => {
   const renderRecordedAudio = () => {
     return <RecordedAudio
               recordedFile={state.recordedFile}
-              uuid={props.filename}
+              filename={props.filename}
               audioDuration={recordDuration.current}
               resetRecorder={() => resetRecorder()}
               primaryColor={props.primaryColor}

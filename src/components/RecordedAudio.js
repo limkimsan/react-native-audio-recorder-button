@@ -25,7 +25,7 @@ const RecordedAudio = (props) => {
   const togglePlayAudio = () => {
     if (!currentAudioPlayer.current) {
       setState({isPlaying: true})
-      audioPlayerService.play(props.recordedFile, props.uuid, null, (audioPlayer, playSeconds, duration, countInterval) => {
+      audioPlayerService.play(props.recordedFile, props.filename, null, (audioPlayer, playSeconds, duration, countInterval) => {
         currentAudioPlayer.current = audioPlayer;
         playInterval.current = countInterval;
         setState({playSeconds: playSeconds});
