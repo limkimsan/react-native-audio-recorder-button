@@ -1,11 +1,11 @@
-# react-native-audio-recorder
+# react-native-audio-recorder-button
 
-React Native Audio Recorder is a component for recording the audio and can play the recorded audio.
+React Native Audio Recorder Button is a component for recording the audio and can play the recorded audio.
 
 ## Installation
 
 ```sh
-npm install react-native-audio-recorder
+npm install react-native-audio-recorder-button
 ```
 
 ## Installing dependencies
@@ -22,7 +22,7 @@ npm install react-native-permissions react-native-vector-icons react-native-soun
 ## Usage
 
 ```js
-import AudioRecorder from 'react-native-audio-recorder';
+import AudioRecorder from 'react-native-audio-recorder-button';
 
 // ...
 

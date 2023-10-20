@@ -1,31 +1,18 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-audio-recorder';
+import { View } from 'react-native';
+import AudioRecorder from 'react-native-audio-recorder-button';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
+    <View>
+      <AudioRecorder
+        filename='testing-voice-record.mp4'
+        onFinishRecord={(filePath) => {console.log('==== recorded file path = ', filePath)}}
+        containerStyle={{padding: 20}}
+        primaryColor={'green'}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
