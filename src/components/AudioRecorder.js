@@ -1,5 +1,5 @@
 import React, {useReducer, useRef} from 'react';
-import {Alert, View, Platform} from 'react-native';
+import {Alert, View, Platform, Linking} from 'react-native';
 import {Recorder} from '@react-native-community/audio-toolkit';
 import Toast, { DURATION } from 'react-native-easy-toast';
 
@@ -12,7 +12,6 @@ const AudioRecorder = (props) => {
   const recorderInterval = useRef(null);
   const recordDuration = useRef(0);
   const recordBtnRef = useRef(null);
-  const filename = useRef(`${props.filename}.mp4`);
   const toastRef = useRef(null)
   const [state, setState] = useReducer((prev, next) => {
     return {...prev, ...next}
@@ -31,7 +30,7 @@ const AudioRecorder = (props) => {
 
     permissionService.checkMicrophonePermission(androidPermissionTitle, androidPermissionDescription,
       () => {
-        recorder.current = new Recorder(filename.current);
+        recorder.current = new Recorder(props.filename);
         recorder.current.prepare(() => {
           recorder.current.record(() => {
             recordBtnRef.current?.updateIsRecording(true);
@@ -41,7 +40,18 @@ const AudioRecorder = (props) => {
           });
         });
       },
-      () => {Alert.alert(iOSPermissionTitle, iOSPermissionDescription)}
+      () => {
+        Alert.alert(iOSPermissionTitle, iOSPermissionDescription,[
+          {
+            text: props.iOSAlertCancelLabel || 'បិទ',
+            style: 'cancel',
+          },
+          {
+            text: props.iOSAlertSettingsLabel || 'ការកំណត់',
+            onPress: () => Linking.openSettings(),
+          },
+        ])
+      }
     )
   }
 
