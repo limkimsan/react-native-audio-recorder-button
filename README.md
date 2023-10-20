@@ -11,8 +11,9 @@ npm install react-native-audio-recorder
 ## Installing dependencies
 
 ```sh
-npm install react-native-vector-icons react-native-sound @react-native-community/audio-toolkit react-native-easy-toast
+npm install react-native-permissions react-native-vector-icons react-native-sound @react-native-community/audio-toolkit react-native-easy-toast
 ```
+- [react-native-permissions](https://github.com/zoontek/react-native-permissions) (follow the instruction in the doc to enable the permission)
 - [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
 - [react-native-sound](https://github.com/zmxv/react-native-sound)
 - [@react-native-community/audio-toolkit](https://github.com/react-native-audio-toolkit/react-native-audio-toolkit)
