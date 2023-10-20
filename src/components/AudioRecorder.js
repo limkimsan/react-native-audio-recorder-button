@@ -1,5 +1,5 @@
 import React, {useReducer, useRef} from 'react';
-import {View, Platform} from 'react-native';
+import {Alert, View, Platform} from 'react-native';
 import {Recorder} from '@react-native-community/audio-toolkit';
 import Toast, { DURATION } from 'react-native-easy-toast';
 
@@ -24,7 +24,12 @@ const AudioRecorder = (props) => {
   });
 
   const startRecording = () => {
-    permissionService.checkMicrophonePermission('Microphone Permission', 'This mobile app require your microphone permission in order to be able to record the voice.',
+    const androidPermissionTitle = props.androidPermissionTitle || 'កម្មវិធីនេះត្រូវការប្រើប្រាស់មីក្រូហ្វូនរបស់អ្នក';
+    const androidPermissionDescription = props.androidPermissionDescription || 'អនុញ្ញាតឱ្យប្រើប្រាស់មីក្រូហ្វូនរបស់អ្នកដើម្បីអាចថតសម្លេងបាន។';
+    const iOSPermissionTitle = props.iOSPermissionTitle || 'កម្មវិធីនេះត្រូវការប្រើប្រាស់មីក្រូហ្វូនរបស់អ្នក';
+    const iOSPermissionDescription = props.iOSPermissionDescription || 'អនុញ្ញាតឱ្យប្រើប្រាស់មីក្រូហ្វូនរបស់អ្នកដើម្បីអាចថតសម្លេងបាន។ សូមចូលទៅកាន់ការកំណត់ (Settings) ដើម្បីធ្វើការអនុញ្ញាត។';
+
+    permissionService.checkMicrophonePermission(androidPermissionTitle, androidPermissionDescription,
       () => {
         recorder.current = new Recorder(filename.current);
         recorder.current.prepare(() => {
@@ -36,7 +41,7 @@ const AudioRecorder = (props) => {
           });
         });
       },
-      () => {toastRef.current?.show("Please turn on the permission to use the microhone in the setting", 3000)}
+      () => {Alert.alert(iOSPermissionTitle, iOSPermissionDescription)}
     )
   }
 
@@ -71,7 +76,7 @@ const AudioRecorder = (props) => {
   }
 
   const renderRecordButton = () => {
-    const toastMessage = props.toastMessage || 'សូមចុច និងសង្កត់លើប៊ូតុងដើម្បីថតសម្លេង'
+    const toastMessage = props.instructionToastMessage || 'សូមចុច និងសង្កត់លើប៊ូតុងដើម្បីថតសម្លេង'
     return <AudioRecordButton
               ref={recordBtnRef}
               recordDuration={recordDuration.current}

@@ -36,13 +36,17 @@ import AudioRecorder from 'react-native-audio-recorder';
 ## Properties
 #### Basic
 
-| Prop                |    Default    |    Type    |  Optional  | Description                                                                |
-| :------------------ | :-----------: | :--------: | :--------: | :------------------------------------------------------------------------- |
-| filename            |      ''       |  `string`  |   `false`  | Filename of the recorded audio               |
-| disabled            |     false     |  `boolean` |   `true`   | Status to disable the record button               |
-| primaryColor        |   '#1b91f7'   |  `string`  |   `true`   | Primary color of the buttons               |
-| toastMessage        |      ''       |  `string`  |   `true`   | Toast message that will show when pressed on the record button (not long press)       |
-| onFinishRecord      |      {}       | `function` |   `true`   | The function that will called when stop recording. It returns with the recorded audio file path |
+| Prop                        |    Default    |    Type    |  Optional  | Description                                                                |
+| :-------------------------- | :-----------: | :--------: | :--------: | :------------------------------------------------------------------------- |
+| filename                    |      ''       |  `string`  |   `false`  | Filename of the recorded audio               |
+| disabled                    |     false     |  `boolean` |   `true`   | Status to disable the record button               |
+| primaryColor                |   '#1b91f7'   |  `string`  |   `true`   | Primary color of the buttons               |
+| instructionToastMessage     |      ''       |  `string`  |   `true`   | Toast message that will show when pressed on the record button (not long press)       |
+| androidPermissionTitle      |      ''       |  `string`  |   `true`   | The title of the request microphone permission on Android        |
+| androidPermissionDescription|      ''       |  `string`  |   `true`   | The description of the request microphone permission on Android       |
+| iOSPermissionTitle          |      ''       |  `string`  |   `true`   | The title of the request microphone permission on iOS        |
+| iOSPermissionDescription    |      ''       |  `string`  |   `true`   | The description of the request microphone permission on iOS       |
+| onFinishRecord              |      {}       | `function` |   `true`   | The function that will called when stop recording. It returns with the recorded audio file path |
 
 
 #### Custom styles
