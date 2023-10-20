@@ -2,6 +2,14 @@
 
 React Native Audio Recorder Button is a component for recording the audio and can play the recorded audio.
 
+<span>
+  <img src="https://github.com/limkimsan/react-native-audio-recorder-button/assets/18114944/68f7aaae-3a08-4c1d-b36f-7ad007ca19a6" width="270" height="550" />
+</span>
+<span>
+  <img src="https://github.com/limkimsan/react-native-audio-recorder-button/assets/18114944/bf284b27-dad7-43c3-8c92-60d752c22a06" width="270" height="550" />
+</span>
+
+
 ## Installation
 
 ```sh
