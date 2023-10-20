@@ -40,7 +40,10 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/limkimsan/react-native-audio-recorder",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limkimsan/react-native-audio-recorder.git"
+  },
   "author": "Kimsanlim <kimsanlim27@gmail.com> (https://github.com/limkimsan)",
   "license": "MIT",
   "bugs": {
@@ -160,5 +163,8 @@
         }
       ]
     ]
+  },
+  "directories": {
+    "example": "example"
   }
 }
