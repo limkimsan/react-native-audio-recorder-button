@@ -1,3 +1,4 @@
+import {Platform} from 'react-native';
 import Sound from 'react-native-sound';
 
 // Notice: The audio file must have the Bit Rate Mode as Constant in order to prevent the library from
@@ -13,6 +14,8 @@ const audioPlayerService = (() => {
 
   function play(filename, itemId, playingId, callback) {
     if (itemId == playingId) return;    // prevent the player from playing the same audio muliple time overlap each other
+
+    if (Platform.OS === 'ios') { Sound.enable(true); }
 
     const audioPlayer = new Sound(filename, '', (error) => {
       if (!!error)
