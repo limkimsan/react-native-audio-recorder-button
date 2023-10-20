@@ -1,5 +1,5 @@
 {
-  "name": "react-native-audio-recorder",
+  "name": "react-native-audio-recorder-button",
   "version": "1.0.0",
   "description": "React Native Audio Recorder is a component for recording the audio and can play the recorded audio.",
   "main": "lib/commonjs/index",
@@ -42,14 +42,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/limkimsan/react-native-audio-recorder.git"
+    "url": "git+https://github.com/limkimsan/react-native-audio-recorder-button.git"
   },
   "author": "Kimsanlim <kimsanlim27@gmail.com> (https://github.com/limkimsan)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/limkimsan/react-native-audio-recorder/issues"
+    "url": "https://github.com/limkimsan/react-native-audio-recorder-button/issues"
   },
-  "homepage": "https://github.com/limkimsan/react-native-audio-recorder#readme",
+  "homepage": "https://github.com/limkimsan/react-native-audio-recorder-button#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
