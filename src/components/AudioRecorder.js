@@ -7,7 +7,9 @@ import AudioRecordButton from './AudioRecordButton';
 import RecordedAudio from './RecordedAudio';
 import permissionService from '../services/permission_service';
 
-const AudioRecorder = (props) => {
+const {useImperativeHandle} = React
+
+const AudioRecorder = (props, ref) => {
   const recorder = useRef(null);
   const recorderInterval = useRef(null);
   const recordDuration = useRef(0);
@@ -21,6 +23,20 @@ const AudioRecorder = (props) => {
     playSeconds: 0,
     recordedFile: null,
   });
+
+  useImperativeHandle(ref, () => ({
+    setRecordButtonVisible,
+    setRecordedFile,
+  }));
+
+  const setRecordButtonVisible = (status) => {
+    setState({isRecordButtonVisible: status});
+  }
+
+  const setRecordedFile = (filePath, duration) => {
+    setState({recordedFile: filePath});
+    recordDuration.current = duration;
+  }
 
   const startRecording = () => {
     const androidPermissionTitle = props.androidPermissionTitle || 'កម្មវិធីនេះត្រូវការប្រើប្រាស់មីក្រូហ្វូនរបស់អ្នក';
@@ -65,11 +81,12 @@ const AudioRecorder = (props) => {
         isRecordButtonVisible: false,
         recordedFile: recorder.current.fsPath
       });
-      !!props.onFinishRecord && props.onFinishRecord(recorder.current.fsPath);
+      !!props.onFinishRecord && props.onFinishRecord(recorder.current.fsPath, recordDuration.current);
     });
   };
 
   const resetRecorder = () => {
+    !!props.onDeleteAudio && props.onDeleteAudio();
     if (!recorder.current) return;
 
     recorder.current.destroy();
@@ -125,4 +142,4 @@ const AudioRecorder = (props) => {
   )
 }
 
-export default AudioRecorder;
+export default React.forwardRef(AudioRecorder);

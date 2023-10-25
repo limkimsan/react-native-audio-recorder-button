@@ -57,7 +57,8 @@ import AudioRecorder from 'react-native-audio-recorder-button';
 | iOSPermissionDescription    |      ''       |  `string`  |   `true`   | The description of the request microphone permission on iOS       |
 | iOSAlertCancelLabel         |     'បិទ'      |  `string`  |   `true`   | The left button label of the iOS permission alert          |
 | iOSAlertSettingsLabel       |    'ការកំណត់'   |  `string`  |   `true`   | The right button label of the iOS permission alert         |
-| onFinishRecord              |      {}       | `function` |   `true`   | The function that will called when stop recording. It returns with the recorded audio file path |
+| onFinishRecord              |      {}       | `function` |   `true`   | The function that will called when stop recording. It returns with the recorded audio file path and recorded audio duration |
+| onDeleteAudio               |      {}       | `function` |   `true`   | The function that will called deleteing the recorded audio   |
 
 
 #### Custom styles
@@ -71,6 +72,12 @@ import AudioRecorder from 'react-native-audio-recorder-button';
 | playDurationLabelStyle      |    {...}    |  `style`  |   `true`   | Style of the playing audio duration label          |
 | playIconStyle               |    {...}    |  `style`  |   `true`   | Style of the play icon style             |
 | pauseIconStyle              |    {...}    |  `style`  |   `true`   | Style of the pause icon style            |
+
+#### Ref method
+| Prop                    |   Type    |  Optional  | Description                                                |
+| :---------------------- | :-------: | :--------: | :--------------------------------------------------------- |
+| setRecordButtonVisible  | `fuction` |  Optional  | A reference fuction to set the visibility of the record button (ex: audioRef.current?.setRecordButtonVisible(true)) |
+| setRecordedFile         | `fuction` |  Optional  | A reference fuction to set audio file path and its duration (ex: audioRef.current?.setRecoredFile(FILE_PATH, 10)) |
 
 ## Contributing
 
