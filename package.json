@@ -83,7 +83,7 @@
     "react-native": "*",
     "@react-native-community/audio-toolkit": "^2.0.3",
     "react-native-easy-toast": "^2.3.0",
-    "react-native-permissions": "^3.10.0",
+    "react-native-permissions": "^5.2.5",
     "react-native-sound": ">=0.11.2",
     "react-native-vector-icons": ">=9.2.0"
   },
